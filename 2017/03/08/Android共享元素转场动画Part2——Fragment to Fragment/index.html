@@ -87,12 +87,27 @@
 
 
 
-<meta property="og:type" content="website">
-<meta property="og:title" content="SheepYang">
-<meta property="og:url" content="http://yoursite.com/index.html">
+<meta name="description" content="继续Part1部分–Activity to Activity，这个部分我们简单介绍下Fragment to Fragment的共享动画实现；
+github源码
+先看效果
+Fragment to Fragment首先我们需要创建一个Activity容器来加载Fragment：123456789101112131415public class MainActivity extends AppCompa">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android共享元素转场动画Part2——Fragment to Fragment">
+<meta property="og:url" content="http://yoursite.com/2017/03/08/Android共享元素转场动画Part2——Fragment to Fragment/index.html">
 <meta property="og:site_name" content="SheepYang">
+<meta property="og:description" content="继续Part1部分–Activity to Activity，这个部分我们简单介绍下Fragment to Fragment的共享动画实现；
+github源码
+先看效果
+Fragment to Fragment首先我们需要创建一个Activity容器来加载Fragment：123456789101112131415public class MainActivity extends AppCompa">
+<meta property="og:image" content="http://om6hh53na.bkt.clouddn.com/fragmentTransition.gif">
+<meta property="og:updated_time" content="2017-03-08T07:49:52.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="SheepYang">
+<meta name="twitter:title" content="Android共享元素转场动画Part2——Fragment to Fragment">
+<meta name="twitter:description" content="继续Part1部分–Activity to Activity，这个部分我们简单介绍下Fragment to Fragment的共享动画实现；
+github源码
+先看效果
+Fragment to Fragment首先我们需要创建一个Activity容器来加载Fragment：123456789101112131415public class MainActivity extends AppCompa">
+<meta name="twitter:image" content="http://om6hh53na.bkt.clouddn.com/fragmentTransition.gif">
 
 
 
@@ -120,13 +135,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/"/>
+  <link rel="canonical" href="http://yoursite.com/2017/03/08/Android共享元素转场动画Part2——Fragment to Fragment/"/>
 
 
 
 
 
-  <title> SheepYang </title>
+  <title> Android共享元素转场动画Part2——Fragment to Fragment | SheepYang </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -151,9 +166,7 @@
     
   
 
-  <div class="container one-collumn sidebar-position-left 
-   page-home 
- ">
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -226,9 +239,9 @@
         <div class="content-wrap">
           <div id="content" class="content">
             
-  <section id="posts" class="posts-expand">
+
+  <div id="posts" class="posts-expand">
     
-      
 
   
 
@@ -258,10 +271,7 @@
             
             
               
-                
-                <a class="post-title-link" href="/2017/03/08/Android共享元素转场动画Part2——Fragment to Fragment/" itemprop="url">
-                  Android共享元素转场动画Part2——Fragment to Fragment
-                </a>
+                Android共享元素转场动画Part2——Fragment to Fragment
               
             
           </h1>
@@ -312,9 +322,7 @@
       
 
       
-        
-          
-            <p>继续<a href="https://hexiangyuan.github.io/2017/03/02/%E5%85%B1%E4%BA%AB%E5%85%83%E7%B4%A0%E8%BD%AC%E5%9C%BA%E5%8A%A8%E7%94%BBPart1--ActivityToActivity/" target="_blank" rel="external">Part1部分–Activity to Activity</a>，这个部分我们简单介绍下Fragment to Fragment的共享动画实现；</p>
+        <p>继续<a href="https://hexiangyuan.github.io/2017/03/02/%E5%85%B1%E4%BA%AB%E5%85%83%E7%B4%A0%E8%BD%AC%E5%9C%BA%E5%8A%A8%E7%94%BBPart1--ActivityToActivity/" target="_blank" rel="external">Part1部分–Activity to Activity</a>，这个部分我们简单介绍下Fragment to Fragment的共享动画实现；</p>
 <p><a href="https://github.com/hexiangyuan/SharedElementTransitionDemo/tree/fragmentToFragment" target="_blank" rel="external">github源码</a></p>
 <h2 id="先看效果"><a href="#先看效果" class="headerlink" title="先看效果"></a>先看效果</h2><p><img src="http://om6hh53na.bkt.clouddn.com/fragmentTransition.gif" alt="fragmentToFragment"></p>
 <h2 id="Fragment-to-Fragment"><a href="#Fragment-to-Fragment" class="headerlink" title="Fragment to Fragment"></a>Fragment to Fragment</h2><p>首先我们需要创建一个Activity容器来加载Fragment：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MainActivity</span> <span class="keyword">extends</span> <span class="title">AppCompatActivity</span> </span>&#123;</div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onCreate</span><span class="params">(Bundle savedInstanceState)</span> </span>&#123;</div><div class="line">        <span class="keyword">super</span>.onCreate(savedInstanceState);</div><div class="line">        setContentView(R.layout.activity_main);</div><div class="line">        Fragment fragment = getSupportFragmentManager().findFragmentByTag(FragmentA.class.getName());</div><div class="line">        <span class="keyword">if</span> (fragment == <span class="keyword">null</span>) &#123;</div><div class="line">            fragment = FragmentA.newInstance();</div><div class="line">            getSupportFragmentManager().beginTransaction().add(R.id.activity_main,</div><div class="line">                fragment,</div><div class="line">                FragmentA.class.getName())</div><div class="line">                .commit();</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
@@ -349,16 +357,20 @@
 <p><a href="https://sheepyang.cn" target="_blank" rel="external">Blog</a></p>
 <p>非常感谢，你能耐心读完；</p>
 
-          
+      
+    </div>
+
+    <div>
+      
         
+
       
     </div>
 
     <div>
       
-    </div>
+        
 
-    <div>
       
     </div>
 
@@ -367,167 +379,38 @@
       
 
       
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/03/02/共享元素转场动画Part1--ActivityToActivity/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Sheep Yang">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="http://om6hh53na.bkt.clouddn.com/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="SheepYang">
-    </span>
-
-    
-      <header class="post-header">
-
         
-        
-          <h1 class="post-title" itemprop="name headline">
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
             
+              <a href="/2017/03/02/共享元素转场动画Part1--ActivityToActivity/" rel="next" title="共享元素转场动画Part1————Activity to Activity">
+                <i class="fa fa-chevron-left"></i> 共享元素转场动画Part1————Activity to Activity
+              </a>
             
-              
-                
-                <a class="post-title-link" href="/2017/03/02/共享元素转场动画Part1--ActivityToActivity/" itemprop="url">
-                  共享元素转场动画Part1————Activity to Activity
-                </a>
-              
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
             
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-03-02T15:55:10+08:00">
-                2017-03-02
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
+          </div>
         </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
       
 
       
-        
-          
-            <p>Share Element Transition（共享元素变换）这一概念是在android 5.0 Material Design中提出的新的页面转场的方式。<br>那么本文将教你一步一步的做出炫酷的MD Style的转场动画。</p>
-<h2 id="什么是共享元素变换？"><a href="#什么是共享元素变换？" class="headerlink" title="什么是共享元素变换？"></a>什么是共享元素变换？</h2><p>元素共享变换的定义：共享的View元素从一个Activity/Fragment到另一个Activity/Fragment的切换中是如何变化的；<br>在Google Play,Google Music 等众多Google嫡系APP中就得到了很多的运用。例如下图是Google Music的变化效果：</p>
-<p><img src="http://om6hh53na.bkt.clouddn.com/google_music.gif" alt="Google Music"></p>
-<p>上图中的Activity A 中Grid列表的CardView中ImageView和Acitivty B 的ImageView拥有共享的元素图片,于是就形成了<br>无缝的动画切换效果。</p>
-<h2 id="开始准备工作"><a href="#开始准备工作" class="headerlink" title="开始准备工作"></a>开始准备工作</h2><p>首先，我们要开启windowContentTransitions.<br>如果你的targetSdk &lt; 21，那么你需要在你的res文件夹下创建一个value-v21的资源文件夹，添加以下一行代码<br><figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="comment">&lt;!-- Base application theme. --&gt;</span></div><div class="line">   <span class="tag">&lt;<span class="name">style</span> <span class="attr">name</span>=<span class="string">"AppTheme"</span> <span class="attr">parent</span>=<span class="string">"Theme.AppCompat.Light.DarkActionBar"</span>&gt;</span><span class="xml"></span></div><div class="line">       <span class="comment">&lt;!-- Customize your theme here. --&gt;</span></div><div class="line">       //add this line to open transitions</div><div class="line">       <span class="tag">&lt;<span class="name">item</span> <span class="attr">name</span>=<span class="string">"android:windowContentTransitions"</span>&gt;</span>true<span class="tag">&lt;/<span class="name">item</span>&gt;</span></div><div class="line">   <span class="tag">&lt;/<span class="name">style</span>&gt;</span></div></pre></td></tr></table></figure></p>
-<h2 id="Activity-to-Activity"><a href="#Activity-to-Activity" class="headerlink" title="Activity to Activity"></a>Activity to Activity</h2><p>然后，我们搭建两个Activity ActivityA 和ActivityB,如下图 ActivityA中有一个图片ImageView和一个按钮Button，ActivityB中有一个大图ImageView和一个描述的TextView。</p>
-<p><img src="http://om6hh53na.bkt.clouddn.com/activity_a.png" alt="ActivityA"><br><img src="http://om6hh53na.bkt.clouddn.com/activity_b.png" alt="ActivityB"></p>
-<p>ActivityA layout 布局文件如下：</p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div></pre></td><td class="code"><pre><div class="line">&lt;?xml version="1.0" encoding="utf-8"?&gt;</div><div class="line"><span class="tag">&lt;<span class="name">RelativeLayout</span> <span class="attr">xmlns:android</span>=<span class="string">"http://schemas.android.com/apk/res/android"</span></span></div><div class="line">    <span class="attr">xmlns:tools</span>=<span class="string">"http://schemas.android.com/tools"</span></div><div class="line">    <span class="attr">android:id</span>=<span class="string">"@+id/activity_main"</span></div><div class="line">    <span class="attr">android:layout_width</span>=<span class="string">"match_parent"</span></div><div class="line">    <span class="attr">android:layout_height</span>=<span class="string">"match_parent"</span></div><div class="line">    <span class="attr">android:paddingBottom</span>=<span class="string">"@dimen/activity_vertical_margin"</span></div><div class="line">    <span class="attr">android:paddingLeft</span>=<span class="string">"@dimen/activity_horizontal_margin"</span></div><div class="line">    <span class="attr">android:paddingRight</span>=<span class="string">"@dimen/activity_horizontal_margin"</span></div><div class="line">    <span class="attr">android:paddingTop</span>=<span class="string">"@dimen/activity_vertical_margin"</span></div><div class="line">    <span class="attr">tools:context</span>=<span class="string">"io.github.hexiangyuan.sharedelementtransitionsdemo.ActivityA"</span>&gt;</div><div class="line"></div><div class="line">    <span class="tag">&lt;<span class="name">ImageView</span></span></div><div class="line">        <span class="attr">android:id</span>=<span class="string">"@+id/imageView"</span></div><div class="line">        <span class="attr">android:layout_width</span>=<span class="string">"148dp"</span></div><div class="line">        <span class="attr">android:layout_height</span>=<span class="string">"148dp"</span></div><div class="line">        <span class="attr">android:scaleType</span>=<span class="string">"centerCrop"</span></div><div class="line">        <span class="attr">android:transitionName</span>=<span class="string">"@string/transitions_name"</span></div><div class="line">        <span class="attr">android:src</span>=<span class="string">"@drawable/image"</span> /&gt;</div><div class="line"></div><div class="line">    <span class="tag">&lt;<span class="name">Button</span></span></div><div class="line">        <span class="attr">android:id</span>=<span class="string">"@+id/button"</span></div><div class="line">        <span class="attr">android:layout_width</span>=<span class="string">"wrap_content"</span></div><div class="line">        <span class="attr">android:layout_height</span>=<span class="string">"wrap_content"</span></div><div class="line">        <span class="attr">android:layout_alignParentLeft</span>=<span class="string">"true"</span></div><div class="line">        <span class="attr">android:layout_alignParentStart</span>=<span class="string">"true"</span></div><div class="line">        <span class="attr">android:layout_below</span>=<span class="string">"@+id/imageView"</span></div><div class="line">        <span class="attr">android:onClick</span>=<span class="string">"imageClick"</span></div><div class="line">        <span class="attr">android:text</span>=<span class="string">"Click Me"</span> /&gt;</div><div class="line"><span class="tag">&lt;/<span class="name">RelativeLayout</span>&gt;</span></div></pre></td></tr></table></figure>
-<p>特别注意的是<code>android:transitionName=&quot;@string/transitions_name</code>这一个属性，需要加在共享元素的View下，细心的朋友会发现Android Studio会变黄的tips提醒</p>
-<blockquote>
-<p>This check finds attributes set in XML files that were introduced in a version newer than the oldest version targeted by your application (with the minSdkVersion attribute).<br>This is not an error;<br>the application will simply ignore the attribute. However, if the attribute is important to the appearance of functionality of your application, you should consider finding an alternative way to achieve the same result with only available attributes, and then you can optionally create a copy of &gt; &gt; the layout in a layout-vNN folder which will be used on API NN or higher where you can take advantage of the newer attribute.</p>
-</blockquote>
-<p>意思是：这不是个错误，当你的target &lt; 21时，你会收到lint的警告，你可以忽略或者设置不提醒。</p>
-<p>AcitivityA java代码文件如下：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ActivityA</span> <span class="keyword">extends</span> <span class="title">AppCompatActivity</span> </span>&#123;</div><div class="line"></div><div class="line">    <span class="keyword">private</span> ImageView imageView;</div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onCreate</span><span class="params">(Bundle savedInstanceState)</span> </span>&#123;</div><div class="line">        <span class="keyword">super</span>.onCreate(savedInstanceState);</div><div class="line">        setContentView(R.layout.acitivit_a);</div><div class="line">        imageView = (ImageView) findViewById(R.id.imageView);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">imageClick</span><span class="params">(View v)</span> </span>&#123;</div><div class="line">        Intent intent = <span class="keyword">new</span> Intent(<span class="keyword">this</span>, SimpleActivityB.class);</div><div class="line">        ActivityOptionsCompat optionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation(</div><div class="line">                <span class="keyword">this</span>, imageView,</div><div class="line">                getString(R.string.transitions_name)</div><div class="line">        );</div><div class="line">        startActivity(intent, optionsCompat.toBundle());</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>需要留意的是</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">Intent intent = <span class="keyword">new</span> Intent(<span class="keyword">this</span>, SimpleActivityB.class);</div><div class="line">        ActivityOptionsCompat optionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation(</div><div class="line">                <span class="keyword">this</span>, imageView,</div><div class="line">                getString(R.string.transitions_name)</div><div class="line">        );</div><div class="line">        startActivity(intent, optionsCompat.toBundle());</div></pre></td></tr></table></figure>
-<p>通过这个<code>ActivityOptionsCompat.makeSceneTransitionAnimation</code>方法，传入（context,view,transitionName)这些参数，然后跳转时候会将optiont通过bundle的方式传递过去；</p>
-<p>然后，在ActivityB中：</p>
-<p>layout布局文件</p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div></pre></td><td class="code"><pre><div class="line">&lt;?xml version="1.0" encoding="utf-8"?&gt;</div><div class="line"><span class="tag">&lt;<span class="name">RelativeLayout</span> <span class="attr">xmlns:android</span>=<span class="string">"http://schemas.android.com/apk/res/android"</span></span></div><div class="line">    <span class="attr">xmlns:tools</span>=<span class="string">"http://schemas.android.com/tools"</span></div><div class="line">    <span class="attr">android:id</span>=<span class="string">"@+id/activity_main"</span></div><div class="line">    <span class="attr">android:layout_width</span>=<span class="string">"match_parent"</span></div><div class="line">    <span class="attr">android:layout_height</span>=<span class="string">"match_parent"</span></div><div class="line">    <span class="attr">tools:context</span>=<span class="string">"io.github.hexiangyuan.sharedelementtransitionsdemo.ActivityA"</span>&gt;</div><div class="line"></div><div class="line">    <span class="tag">&lt;<span class="name">ImageView</span></span></div><div class="line">        <span class="attr">android:id</span>=<span class="string">"@+id/imageView"</span></div><div class="line">        <span class="attr">android:layout_width</span>=<span class="string">"match_parent"</span></div><div class="line">        <span class="attr">android:layout_height</span>=<span class="string">"184dp"</span></div><div class="line">        <span class="attr">android:scaleType</span>=<span class="string">"centerCrop"</span></div><div class="line">        <span class="attr">android:transitionName</span>=<span class="string">"@string/transitions_name"</span></div><div class="line">        <span class="attr">android:src</span>=<span class="string">"@drawable/image"</span> /&gt;</div><div class="line"></div><div class="line">    <span class="tag">&lt;<span class="name">TextView</span></span></div><div class="line">        <span class="attr">android:id</span>=<span class="string">"@+id/textView"</span></div><div class="line">        <span class="attr">android:layout_width</span>=<span class="string">"match_parent"</span></div><div class="line">        <span class="attr">android:layout_height</span>=<span class="string">"wrap_content"</span></div><div class="line">        <span class="attr">android:layout_alignParentEnd</span>=<span class="string">"true"</span></div><div class="line">        <span class="attr">android:layout_alignParentRight</span>=<span class="string">"true"</span></div><div class="line">        <span class="attr">android:layout_below</span>=<span class="string">"@+id/imageView"</span></div><div class="line">        <span class="attr">android:layout_marginEnd</span>=<span class="string">"16dp"</span></div><div class="line">        <span class="attr">android:layout_marginRight</span>=<span class="string">"16dp"</span></div><div class="line">        <span class="attr">android:text</span>=<span class="string">"这是内容这是内容这是内容这是内容这是内容这是内容这是内容这是内容这是内容这是内容这是内容这是内容这是内容这是内容这是内容这是内容这是内容这是内容这是内容这是内容"</span></div><div class="line">        <span class="attr">android:textSize</span>=<span class="string">"16sp"</span> /&gt;</div><div class="line"></div><div class="line"><span class="tag">&lt;/<span class="name">RelativeLayout</span>&gt;</span></div></pre></td></tr></table></figure>
-<p>java</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ActivityB</span> <span class="keyword">extends</span> <span class="title">AppCompatActivity</span></span>&#123;</div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onCreate</span><span class="params">(@Nullable Bundle savedInstanceState)</span> </span>&#123;</div><div class="line">        <span class="keyword">super</span>.onCreate(savedInstanceState);</div><div class="line">        setContentView(R.layout.activity_b);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>在ActivityB中就只需要在共享元素上添加一个属性<br><code>android:transitionName=&quot;@string/transitions_name&quot;</code>就OK了；</p>
-<p>那么，Acitity to Activity 的共享动画就完成了，赶快Run 一下看看成果吧，是不是很简单？So easy！</p>
-<p><img src="http://om6hh53na.bkt.clouddn.com/share_part1.gif" alt="finished"></p>
-<p>未完待续…….</p>
-<p>下期预告 part2 – Fragment to Fragment</p>
-
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
       
     </footer>
   </article>
 
 
-    
-  </section>
 
-  
+    <div class="post-spread">
+      
+    </div>
+  </div>
 
           
           </div>
@@ -535,6 +418,10 @@
 
 
           
+  <div class="comments" id="comments">
+    
+  </div>
+
 
         </div>
         
@@ -554,8 +441,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview sidebar-panel sidebar-panel-active">
+      <section class="site-overview sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image"
                src="http://om6hh53na.bkt.clouddn.com/avatar.png"
@@ -599,6 +495,22 @@
 
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#先看效果"><span class="nav-number">1.</span> <span class="nav-text">先看效果</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Fragment-to-Fragment"><span class="nav-number">2.</span> <span class="nav-text">Fragment to Fragment</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#加载网络图片的元素共享（以Picasso为例）"><span class="nav-number">3.</span> <span class="nav-text">加载网络图片的元素共享（以Picasso为例）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#添加依赖"><span class="nav-number">3.1.</span> <span class="nav-text">添加依赖</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#FragmentA中"><span class="nav-number">3.2.</span> <span class="nav-text">FragmentA中</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#FragmentB中添加加载图片的"><span class="nav-number">4.</span> <span class="nav-text">FragmentB中添加加载图片的:</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
@@ -711,6 +623,10 @@
 
 
   
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
 
   
 
